@@ -1,0 +1,51 @@
+Build a GitHub-ready, zip-downloadable project called "vpc-visual": an animated, beginner-friendly diagram that explains an AWS VPC step by step, in plain language a non-IT person can follow.
+
+STORY
+Explain the VPC as a gated housing society owned by a shop owner named Ravi. Every technical term needs a plain-language analogy (VPC = fenced plot, subnet = lobby/flats, Internet Gateway = main gate, NAT = delivery counter, Security Group = door guard, NACL = gate guard, Load Balancer = receptionist, VPN = secret tunnel, Peering = private road).
+
+LAYOUT
+- Left sidebar: 9 numbered step buttons (each with a title and a short subtitle), plus "Auto-play" (advances every 5 seconds) and "Reset" buttons, and a legend of the moving objects.
+- Main area: ONE large diagram drawn as inline SVG (viewBox 1100x620).
+- Under the diagram: a caption card with 4 parts: step title, "In plain words", "Technical name", "Watch the picture".
+- Clicking a step shows that step and everything before it, so the diagram keeps growing. Clicking an earlier step goes back. The newest pieces fade in with a short glow.
+- On narrow screens the sidebar becomes a horizontal scroll row and the diagram scrolls sideways (min-width 820px) so text stays readable.
+
+THE 9 STEPS (each adds components)
+1. VPC: AWS Cloud region box + VPC box (10.0.0.0/16).
+2. Availability Zones A and B (two buildings).
+3. Subnets: public (gold) and private (purple) in each zone.
+4. Internet Gateway, "The Internet" and "Visitors" boxes, a route-table label, and a first moving envelope entering the gate.
+5. Load balancer bar + web servers in both zones. Requests are shared between zones.
+6. App servers + database + a live-copy database in zone B. Data moves web -> app -> database, with a replication path between zones.
+7. NAT Gateway in the public subnet. A software update leaves via NAT and the gate.
+8. Security: a small "SG guard" tag under every server, NACL tags on subnets, and an intruder that travels toward the private subnet and is stopped with a red cross and "Blocked!".
+9. Office with a VPN gateway (secret tunnel to the private subnet) and a Partner VPC connected by VPC peering.
+
+MOVING OBJECTS
+Use SVG <animateMotion> with <mpath> along dashed, flowing wire paths. Emoji packets: envelope = visitor request, floppy disk = data, repeat arrows = database replication, package = software update, devil = intruder, lock = office VPN, handshake = partner peering. Draw wires first, then boxes, then packets so wires never cross boxes or text.
+
+VISUAL DESIGN
+- Dark "night sky" diagram stage (deep navy gradient with a faint dot grid) in both light and dark mode; the page around it follows light/dark via CSS variables.
+- Colour code: blue = cloud/zones, teal = VPC, gold = public, purple = private, red = security, green = office link.
+- Font: Bricolage Grotesque from Google Fonts with system fallbacks.
+- Respect prefers-reduced-motion. Buttons need visible focus outlines.
+- Do not use emoji that render as empty boxes in labels; keep emoji only for packets and icons, and use plain text for labels like "Route table".
+
+LAYOUT SAFETY RULES
+Keep labels from overlapping: make sure no moving packet passes through any text label, keep subnet labels short, and place the load-balancer packet paths in the gap under the bar. Check every label fits inside its box.
+
+PROJECT FILES (no build step, no dependencies)
+vpc-visual/
+  index.html        (structure only)
+  css/style.css
+  js/app.js         (builds the SVG with small helper functions, step data, and the caption text)
+  .nojekyll
+  LICENSE           (MIT, with "YOUR NAME" placeholder)
+  README.md
+
+README must include: what it is, a table explaining the moving objects, the 9 steps, how to run locally (python3 -m http.server), how to host on GitHub Pages step by step (Settings > Pages > Deploy from branch > main > / root), the project structure, and how to customise the text and colours.
+
+DELIVERY
+1. Run a syntax check on js/app.js (node) before packaging.
+2. Create vpc-visual.zip containing the vpc-visual folder.
+3. Give me the zip as a downloadable file, and tell me in 3 lines how to upload it to GitHub Pages.
